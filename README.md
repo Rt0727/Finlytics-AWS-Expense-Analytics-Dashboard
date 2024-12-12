@@ -1,4 +1,5 @@
 # Finlytics: AWS Expense Analytics Dashboard
+
 ## Overview
 This repository provides an automated setup for an AWS-powered expense analytics dashboard. The project uses Terraform for Infrastructure as Code (IaC) to manage AWS resources, RDS PostgreSQL for secure and scalable data storage, and Dockerized tools for visualizing financial metrics. The dashboard enables users to track and analyze expenses in real-time with a user-friendly interface.
 
@@ -8,7 +9,8 @@ This repository provides an automated setup for an AWS-powered expense analytics
 - **Scalable Data Storage**: Secure and reliable PostgreSQL database hosted on AWS RDS.
 - **S3 Integration**: Enables efficient storage and retrieval of large financial data files.
 - **Monitoring and Performance Optimization**: Implements AWS CloudWatch for system health tracking and optimized SQL queries for faster analytics.
-- **Automation**: Bash scripts for backups and data imports.
+- **Automation**: Python scripts for data import, expense calculations, and dashboard updates.
+- **Backup and Import Scripts**: Bash scripts for backups and data imports.
 
 ## Technologies Used
 - **Cloud Provider**: AWS (EC2, RDS, S3, IAM, CloudWatch)
@@ -16,21 +18,22 @@ This repository provides an automated setup for an AWS-powered expense analytics
 - **Web Framework**: Flask
 - **Containerization**: Docker, Docker Compose
 - **IaC**: Terraform
-- **Automation**: Bash Scripts
+- **Automation**: Bash Scripts, Python (for data handling and calculations)
 
 | Technology                                 | Purpose                              |
 |--------------------------------------------|--------------------------------------|
 | **AWS (EC2, RDS, S3, IAM, CloudWatch)**    | Cloud Provider                       |
-| **PostgreSQL**                             | Database for library data            |
+| **PostgreSQL**                             | Database for financial data          |
 | **Docker**                                 | Containerization                     |
 | **Terraform**                              | Infrastructure provisioning          |
 | **Bash Scripts**                           | Automation of routine tasks          |
-| **Python(Flask)**                          | Core application logic for the CLI   |
+| **Python**                                 | Core application logic for data import, expense calculations, and dashboard management |
 
 ## Prerequisites
 - Install [Docker](https://www.docker.com/)
 - Install [Terraform](https://www.terraform.io/)
 - Install [Git](https://git-scm.com/)
+- Install Python 3.x and required libraries (`psycopg2`, `boto3`)
 - AWS account with necessary permissions for EC2, RDS, and S3
 - Basic knowledge of Bash, Python, and SQL
 
@@ -39,7 +42,7 @@ This repository provides an automated setup for an AWS-powered expense analytics
 ### 1. Clone the Repository
 Clone this repository to your local machine and navigate into the directory:
 ```bash
-git clone remote add origin https://github.com/Rt0727/Finlytics-AWS-Expense-Analytics-Dashboard.git
+git clone https://github.com/Rt0727/Finlytics-AWS-Expense-Analytics-Dashboard.git
 cd Finlytics-AWS-Expense-Analytics-Dashboard
 ```
 
@@ -85,7 +88,30 @@ http://<EC2_PUBLIC_IP>:5000
 ```
 The dashboard allows users to upload financial data, view expense reports, and track trends.
 
-### 6. Use Backup and Data Import Scripts
+### 6. Use Python Scripts for Data Handling and Analytics
+
+#### Import Financial Data
+To import financial data from S3 into PostgreSQL, run the following Python script:
+```bash
+python python/data_importer.py
+```
+This script will fetch financial data from an S3 bucket and import it into the PostgreSQL database for analysis.
+
+#### Calculate Expenses
+To calculate and display expenses by type or date, run the following Python script:
+```bash
+python python/expense_calculator.py
+```
+This script will aggregate expenses and output them by category or date.
+
+#### Manage Dashboard Data
+To update and manage dashboard data, run:
+```bash
+python python/dashboard_manager.py
+```
+This script pulls the latest expense data from the PostgreSQL database and prepares it for display in the dashboard.
+
+### 7. Use Backup and Data Import Scripts
 Automate backups and data imports with the provided scripts:
 
 #### Run Backup Script
@@ -112,6 +138,15 @@ aws-expense-dashboard-setup/
 ├── docker/
 │   ├── Dockerfile            # Dockerfile for Flask app
 │   └── docker-compose.yml    # Docker Compose for local testing
+│
+├── python/
+│   ├── data_importer.py      # Imports financial data from S3 to PostgreSQL
+│   ├── expense_calculator.py # Calculates expenses and aggregates data
+│   ├── dashboard_manager.py  # Manages dashboard data updates
+│   └── tests/                # Unit tests for Python scripts
+│       ├── test_data_importer.py  # Tests for data importer
+│       ├── test_expense_calculator.py  # Tests for expense calculator
+│       └── test_dashboard_manager.py  # Tests for dashboard manager
 │
 ├── scripts/
 │   ├── backup.sh             # Backup script for RDS PostgreSQL
@@ -141,8 +176,8 @@ Access logs for debugging:
 - Integrate third-party APIs for automated financial data imports.
 - Introduce CI/CD pipelines for continuous delivery and deployment.
 
----
+```
 
 For any questions or issues, feel free to reach out at `rt07mahifan@gmail.com`.
 
----
+```
